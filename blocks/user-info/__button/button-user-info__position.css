@@ -1,0 +1,12 @@
+.button-user-info__position {
+  position: absolute;
+  top: 16px;
+  right: 0;
+}
+
+@media screen and (max-width: 980px) {
+  .button-user-info__position {
+    position: static;
+    margin-bottom: 40px;
+  }
+}

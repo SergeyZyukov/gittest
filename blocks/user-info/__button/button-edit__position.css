@@ -1,0 +1,12 @@
+.button-edit__position {
+    position: absolute;
+    top: 165px;
+    left: 185px;
+  }
+  
+  @media screen and (max-width: 980px) {
+    .button-edit__position {
+      position: static;
+      margin-bottom: 40px;
+    }
+  }

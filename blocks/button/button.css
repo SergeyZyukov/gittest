@@ -1,0 +1,21 @@
+@import url(../user-info/__button/button-edit__set.css);
+@import url(../user-info/__button/button-user-info__set.css);
+@import url(../user-info/__button/button-edit__position.css);
+@import url(../user-info/__button/button-user-info__position.css);
+
+.button {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  display: block;
+  cursor: pointer;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight:400;
+}
+
+
+
+.button:focus {
+  outline-color: greenyellow;
+}

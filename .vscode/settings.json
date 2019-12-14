@@ -1,0 +1,8 @@
+{
+    "liveServer.settings.port": 5502,
+    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "eslint.autoFixOnSave": true
+}

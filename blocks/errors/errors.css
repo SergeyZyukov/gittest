@@ -1,0 +1,9 @@
+@import url(../errors/__form/errors__form.css);
+@import url(../errors/__form/up-errors__form.css);
+@import url(../errors/__form/low-errors__form.css);
+
+.errors {
+    display: inline;    
+}
+
+

@@ -1,0 +1,15 @@
+@import url(../scrplacecard/imagelink.css);
+
+.scrplacecard {
+    position: fixed;
+    width:30%; 
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+@media screen and (max-width: 767px) {
+    .scrplacecard {
+      width: 80%;
+    }
+  }
+

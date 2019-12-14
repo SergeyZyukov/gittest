@@ -163,7 +163,7 @@ function inputHandlerForms(event) {
   if (inputLine.classList.contains('popup__input_type_about')) {
     errorOutPut = errorOutPutAbout;
   }
-  
+
   onInputButton(button, false);
   if (forma === document.newPlace) {
     if (errorOutPut === errorOutPutName) {
@@ -179,6 +179,7 @@ function inputHandlerForms(event) {
       }
     }
   }
+  //hbgkdsbksdjjgksfb
 
   if (forma === document.personal) {
     if (validInputStringEmpty(inputstringvalue, errorOutPut) && validInputStringLength(inputstringvalue, errorOutPut)) {

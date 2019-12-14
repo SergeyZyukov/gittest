@@ -163,6 +163,7 @@ function inputHandlerForms(event) {
   if (inputLine.classList.contains('popup__input_type_about')) {
     errorOutPut = errorOutPutAbout;
   }
+  
   onInputButton(button, false);
   if (forma === document.newPlace) {
     if (errorOutPut === errorOutPutName) {

@@ -172,6 +172,7 @@ function inputHandlerForms(event) {
       }
     }
   }
+  
 
   if (forma === document.personal) {
     if (validInputStringEmpty(inputstringvalue, errorOutPut) && validInputStringLength(inputstringvalue, errorOutPut)) {

@@ -66,15 +66,12 @@ function popupIsOpenClose(event) {
   if (parameter.classList.contains('place-card__image')) {
     SCREEN_PLACE_CARD.classList.toggle('popup_is-opened');
     imagelink.setAttribute('src', parameter.style.backgroundImage.slice(5, -2));
-  }
-  if (parameter.classList.contains('button-user-info__set')) {
+  } else if (parameter.classList.contains('button-user-info__set')) {
     parentNewPlace.classList.toggle('popup_is-opened');
-  }
-  if (parameter.classList.contains('button-edit__set')) {
+  } else if (parameter.classList.contains('button-edit__set')) {
     parentPersonal.classList.toggle('popup_is-opened');
     onInputButton(parentPersonal.querySelector('.popup__button'), true);
-  }
-  if (parameter.classList.contains('popup__close')) {
+  } else if (parameter.classList.contains('popup__close')) {
     if (parameter.closest('.popup').classList.contains('popup__scrplacecard')) {
       SCREEN_PLACE_CARD.classList.remove('popup_is-opened');
     } else {
@@ -153,25 +150,21 @@ function inputHandlerForms(event) {
 
   if (inputLine.classList.contains('popup__input_type_name')) {
     errorOutPut = errorOutPutName;
-  }
-  if (inputLine.classList.contains('popup__input_type_link-url')) {
+  } else if (inputLine.classList.contains('popup__input_type_link-url')) {
     errorOutPut = errorOutPutLink;
-  }
-  if (inputLine.classList.contains('popup__input_type_personal')) {
+  } else if (inputLine.classList.contains('popup__input_type_personal')) {
     errorOutPut = errorOutPutPersonal;
-  }
-  if (inputLine.classList.contains('popup__input_type_about')) {
+  } else if (inputLine.classList.contains('popup__input_type_about')) {
     errorOutPut = errorOutPutAbout;
   }
-  
+
   onInputButton(button, false);
   if (forma === document.newPlace) {
     if (errorOutPut === errorOutPutName) {
       if (validInputStringEmpty(inputstringvalue, errorOutPut) && validInputStringLength(inputstringvalue, errorOutPut)) {
         onInputButton(button, false);
       }
-    }
-    if (errorOutPut === errorOutPutLink) {
+    } else if (errorOutPut === errorOutPutLink) {
       onInputButton(button, false);
       if (validInputStringIsLink(inputstringvalue)) {
         onInputButton(button, true);

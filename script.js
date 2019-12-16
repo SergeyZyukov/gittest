@@ -1,31 +1,39 @@
-const PLACE_LIST = document.querySelector('.places-list');
-const USR_INFO = document.querySelector('.user-info');
-const FORM_PLACE = document.forms.newPlace;
-const FORM_PERSONAL = document.forms.personal;
-const SCREEN_PLACE_CARD = document.querySelector('.popup__scrplacecard');
+const placeList = document.querySelector('.places-list');
+const userInfo = document.querySelector('.user-info');
+const FormPlace = document.forms.newPlace;
+const formPersonal = document.forms.personal;
+const screenPlaceCard = document.querySelector('.popup__scrplacecard');
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeLinkUrl = document.querySelector('.popup__input_type_link-url');
 const popupInpuTypePersonal = document.querySelector('.popup__input_type_personal');
 const popupInputTypeAbout = document.querySelector('.popup__input_type_about');
+const errorOutputStrings = {
+  validationLenght: 'Должно быть от 2 до 30 символов',
+  validationEmpty: 'Это обязательное поле',
+  validationLink: 'Здесь должна быть ссылка'
+};
+const errorOutPutName = document.querySelector('.error__name');
+const errorOutPutPersonal = document.querySelector('.error__personal');
+const errorOutPutLink = document.querySelector('.error__link');
+const errorOutPutAbout = document.querySelector('.error__about');
 
 /* Создаем и рендерим карточку */
 function addCard(imgName, imgLink) {
   const placeCard = document.createElement('div');
+  const htmlBlock = '<div class="place-card__image">'
+    + '<button class = "place-card__delete-icon"></button>'
+    + '</div>'
+    + '<div class = "place-card__description">'
+    + '<h3 class = "place-card__name"></h3>'
+    + '<button class = "place-card__like-icon"></button>'
+    + '</div>';
   placeCard.classList.add('place-card');
-  placeCard.innerHTML += `
-    <div class="place-card__image">
-    <button class="place-card__delete-icon"></button>
-    </div>
-    <div class="place-card__description">
-    <h3 class="place-card__name"></h3>
-    <button class="place-card__like-icon"></button>
-    </div>
-    `;
+  placeCard.insertAdjacentHTML('beforeend', htmlBlock);  
   const placeCardimage = placeCard.querySelector('.place-card__image');
   const placeCardname = placeCard.querySelector('.place-card__name');
   placeCardimage.style.backgroundImage = `url(${imgLink})`;
   placeCardname.textContent = imgName;
-  PLACE_LIST.appendChild(placeCard);
+  placeList.appendChild(placeCard);
 }
 
 /* Кнопка актив/дизактив */
@@ -61,10 +69,10 @@ function popupIsOpenClose(event) {
   const parameter = event.target;
   const parentPersonal = document.forms.personal.closest('.popup');
   const parentNewPlace = document.forms.newPlace.closest('.popup');
-  const PARENT_POPUP = parameter.closest('.popup');
+  const parentPopup = parameter.closest('.popup');
 
   if (parameter.classList.contains('place-card__image')) {
-    SCREEN_PLACE_CARD.classList.toggle('popup_is-opened');
+    screenPlaceCard.classList.toggle('popup_is-opened');
     imagelink.setAttribute('src', parameter.style.backgroundImage.slice(5, -2));
   } else if (parameter.classList.contains('button-user-info__set')) {
     parentNewPlace.classList.toggle('popup_is-opened');
@@ -73,11 +81,11 @@ function popupIsOpenClose(event) {
     onInputButton(parentPersonal.querySelector('.popup__button'), true);
   } else if (parameter.classList.contains('popup__close')) {
     if (parameter.closest('.popup').classList.contains('popup__scrplacecard')) {
-      SCREEN_PLACE_CARD.classList.remove('popup_is-opened');
+      screenPlaceCard.classList.remove('popup_is-opened');
     } else {
-      resetErrors(PARENT_POPUP);
-      PARENT_POPUP.querySelector('.popup__form').reset();
-      PARENT_POPUP.classList.remove('popup_is-opened');
+      resetErrors(parentPopup);
+      parentPopup.querySelector('.popup__form').reset();
+      parentPopup.classList.remove('popup_is-opened');
     }
   }
 }
@@ -87,7 +95,7 @@ function validInputStringIsLink(inputString) {
   const errorlink = document.querySelector('.error__link');
   const teststr = /(^https?:\/\/)/;
   if (!teststr.test(inputString)) {
-    errorlink.textContent = 'Здесь должна быть ссылка';
+    errorlink.textContent = errorOutputStrings.validationLink;
     return false;
   }
   errorlink.textContent = '';
@@ -97,7 +105,7 @@ function validInputStringIsLink(inputString) {
 /* Длина строки валидация input'а формы */
 function validInputStringLength(inputString, outPutError) {
   if ((inputString.length <= 1) || (inputString.length > 30)) {
-    outPutError.textContent = 'Поле должно содержать от 2 до 30 символов';
+    outPutError.textContent = errorOutputStrings.validationLenght;
     return false;
   }
   outPutError.textContent = '';
@@ -109,7 +117,7 @@ function validInputStringEmpty(inputString, outPutError) {
   if (inputString !== '') {
     return true;
   }
-  outPutError.textContent = 'Это обязательное поле';
+  outPutError.textContent = errorOutputStrings.validationEmpty;
   return false;
 }
 
@@ -121,72 +129,86 @@ function submitHandlerForms(event) {
   const forma = event.target.closest('.popup__form');
   const name = event.target.elements.name.value;
   const linkabout = event.target.elements.linkabout.value;
-  const USER_INFO_NAME = document.querySelector('.user-info__name');
-  const USER_INFO_JOB = document.querySelector('.user-info__job');
+  const userInfoName = document.querySelector('.user-info__name');
+  const userInfoJob = document.querySelector('.user-info__job');
 
   if (forma === document.newPlace) {
     addCard(name, linkabout);
     resetFormPopupButtonErrors(parent, forma, childButton);
   }
   if (forma === document.personal) {
-    USER_INFO_JOB.textContent = linkabout;
-    USER_INFO_NAME.textContent = name;
+    userInfoJob.textContent = linkabout;
+    userInfoName.textContent = name;
     resetFormPopupButtonErrors(parent, forma, childButton);
+  }
+}
+
+function defineOutputErrorString(lineValue) {
+  if (lineValue.classList.contains('popup__input_type_name')) {
+    return errorOutPutName;
+  }
+  if (lineValue.classList.contains('popup__input_type_link-url')) {
+    return errorOutPutLink;
+  }
+  if (lineValue.classList.contains('popup__input_type_personal')) {
+    return errorOutPutPersonal;
+  }
+  if (lineValue.classList.contains('popup__input_type_about')) {
+    return errorOutPutAbout;
+  }
+  return false;
+}
+
+function validationFormPlace(errorOutPutPlace, formButton, inputstringvalueForm) {
+  if (errorOutPutPlace.classList.contains('error__name')) {
+    if (validInputStringEmpty(inputstringvalueForm, errorOutPutPlace) && validInputStringLength(inputstringvalueForm, errorOutPutPlace)) {
+      onInputButton(formButton, false);
+    }
+  } else if (errorOutPutPlace.classList.contains('error__link')) {
+    onInputButton(formButton, false);
+    if (validInputStringIsLink(inputstringvalueForm)) {
+      onInputButton(formButton, true);
+      FormPlace.addEventListener('submit', submitHandlerForms);
+    }
+  }
+}
+
+function validationFormPersonal(errorOutPerson, formButton, inputstringvalueForm) {
+  if (errorOutPerson.classList.contains('error__personal')) {
+    if (validInputStringEmpty(inputstringvalueForm, errorOutPerson) && validInputStringLength(inputstringvalueForm, errorOutPerson)) {
+      onInputButton(formButton, false);
+    }
+  } else if (errorOutPerson.classList.contains('error__about')) {
+    onInputButton(formButton, false);
+    if (validInputStringEmpty(inputstringvalueForm, errorOutPerson) && validInputStringLength(inputstringvalueForm, errorOutPerson)) {
+      onInputButton(formButton, true);
+      formPersonal.addEventListener('submit', submitHandlerForms);
+    }
   }
 }
 
 /* обработчик input в формах */
 function inputHandlerForms(event) {
   event.preventDefault();
-  let errorOutPut;
   const inputLine = event.target;
   const forma = inputLine.closest('.popup__form');
   const button = forma.querySelector('.popup__button');
   const inputstringvalue = inputLine.value;
-  const errorOutPutName = document.querySelector('.error__name');
-  const errorOutPutPersonal = document.querySelector('.error__personal');
-  const errorOutPutLink = document.querySelector('.error__link');
-  const errorOutPutAbout = document.querySelector('.error__about');
-
-  if (inputLine.classList.contains('popup__input_type_name')) {
-    errorOutPut = errorOutPutName;
-  } else if (inputLine.classList.contains('popup__input_type_link-url')) {
-    errorOutPut = errorOutPutLink;
-  } else if (inputLine.classList.contains('popup__input_type_personal')) {
-    errorOutPut = errorOutPutPersonal;
-  } else if (inputLine.classList.contains('popup__input_type_about')) {
-    errorOutPut = errorOutPutAbout;
-  }
+  const errorOutPut = defineOutputErrorString(inputLine);
 
   onInputButton(button, false);
   if (forma === document.newPlace) {
-    if (errorOutPut === errorOutPutName) {
-      if (validInputStringEmpty(inputstringvalue, errorOutPut) && validInputStringLength(inputstringvalue, errorOutPut)) {
-        onInputButton(button, false);
-      }
-    } else if (errorOutPut === errorOutPutLink) {
-      onInputButton(button, false);
-      if (validInputStringIsLink(inputstringvalue)) {
-        onInputButton(button, true);
-        FORM_PLACE.addEventListener('submit', submitHandlerForms);
-      }
-    }
+    validationFormPlace(errorOutPut, button, inputstringvalue);
   }
-  
-
   if (forma === document.personal) {
-    if (validInputStringEmpty(inputstringvalue, errorOutPut) && validInputStringLength(inputstringvalue, errorOutPut)) {
-      onInputButton(button, true);
-      FORM_PERSONAL.addEventListener('submit', submitHandlerForms);
-    } else {
-      onInputButton(button, false);
-    }
+    validationFormPersonal(errorOutPut, button, inputstringvalue);
   }
 }
+
 /* Удаляем карточку */
 function removeCardPlace(objTarget) {
   const parent = objTarget.closest('.place-card');
-  PLACE_LIST.removeChild(parent);
+  placeList.removeChild(parent);
 }
 
 /* Ставим лайк */
@@ -205,13 +227,13 @@ function likeOrremoveHandler(event) {
   }
 }
 
-PLACE_LIST.addEventListener('click', likeOrremoveHandler);
-PLACE_LIST.addEventListener('click', popupIsOpenClose);
-USR_INFO.addEventListener('click', popupIsOpenClose);
+placeList.addEventListener('click', likeOrremoveHandler);
+placeList.addEventListener('click', popupIsOpenClose);
+userInfo.addEventListener('click', popupIsOpenClose);
 popupInpuTypePersonal.addEventListener('input', inputHandlerForms);
 popupInputTypeAbout.addEventListener('input', inputHandlerForms);
-SCREEN_PLACE_CARD.addEventListener('click', popupIsOpenClose);
+screenPlaceCard.addEventListener('click', popupIsOpenClose);
 popupInputTypeName.addEventListener('input', inputHandlerForms);
 popupInputTypeLinkUrl.addEventListener('input', inputHandlerForms);
-FORM_PLACE.addEventListener('click', popupIsOpenClose);
-FORM_PERSONAL.addEventListener('click', popupIsOpenClose);
+FormPlace.addEventListener('click', popupIsOpenClose);
+formPersonal.addEventListener('click', popupIsOpenClose);
